@@ -2,6 +2,7 @@ import NIOSSL
 import Fluent
 import FluentPostgresDriver
 import Vapor
+import JWT
 
 // configures your application
 public func configure(_ app: Application) async throws {
@@ -17,6 +18,9 @@ public func configure(_ app: Application) async throws {
         tls: .prefer(try .init(configuration: .clientDefault)))
     ), as: .psql)
 
+    let key = ES256PrivateKey()
+    await app.jwt.keys.add(ecdsa: key)
+    
     app.migrations.add(CreateUser())
 
     try routes(app)
