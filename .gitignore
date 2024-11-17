@@ -1,0 +1,13 @@
+Packages
+.build
+.index-build
+xcuserdata
+*.xcodeproj
+DerivedData/
+.DS_Store
+db.sqlite
+.swiftpm
+.env
+.env.*
+! .env.example
+.vscode
