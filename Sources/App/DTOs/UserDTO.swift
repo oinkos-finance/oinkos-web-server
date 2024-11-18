@@ -7,9 +7,7 @@
 
 import Vapor
 
-struct UserCreateError: Error {
-
-}
+struct UserCreateError: Error { }
 
 struct UserCreateDTO: Content, Validatable {
     var username: String
