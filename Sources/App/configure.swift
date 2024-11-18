@@ -15,6 +15,7 @@ public func configure(_ app: Application) async throws {
     await app.jwt.keys.add(ecdsa: key)
     
     app.migrations.add(CreateUser())
+    app.migrations.add(CreateUserToken())
 
     try routes(app)
 }
