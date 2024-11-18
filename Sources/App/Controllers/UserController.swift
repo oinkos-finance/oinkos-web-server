@@ -11,19 +11,16 @@ struct UserController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let users = routes.grouped("users")
         
-        users.post(use: self.create)
+        users.group(":userId") { user in
+            user.get(use: self.getUser)
+        }
     }
     
     @Sendable
-    func create(req: Request) async throws -> UserResponseDTO {
-        try UserCreateDTO.validate(content: req)
-        let createUser = try req.content.decode(UserCreateDTO.self)
-        
-        guard let user = try? createUser.toModel() else {
-            throw Abort(.badRequest, reason: "Mismatched passwords")
+    func getUser(request: Request) async throws -> UserResponseDTO {
+        guard let user = try? await User.find(request.parameters.get(":userId"), on: request.db) else {
+            throw Abort(.notFound, reason: "User not found")
         }
-        
-        try await user.save(on: req.db)
         
         return user.toResponseDTO()
     }
