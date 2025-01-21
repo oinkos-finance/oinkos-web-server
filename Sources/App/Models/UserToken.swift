@@ -50,4 +50,8 @@ final class UserToken: ModelTokenAuthenticatable, @unchecked Sendable {
     func toDTO() -> UserTokenDTO {
         .init(id: self.id, userId: self.$user.id, token: self.token, expiration: self.expiration)
     }
+    
+    func toResponseDTO() -> UserTokenResponseDTO {
+        .init(token: self.token)
+    }
 }
