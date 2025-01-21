@@ -13,6 +13,7 @@ struct CreateUserToken: AsyncMigration {
             .id()
             .field("user_id", .uuid, .required, .references("user", "id"))
             .field("token", .string, .required)
+            .field("expiration", .datetime, .required)
             .unique(on: "token")
             .create()
     }
