@@ -16,7 +16,7 @@ struct SignUpController: RouteCollection {
     }
     
     @Sendable
-    func createUser(request: Request) async throws -> UserTokenDTO {
+    func createUser(request: Request) async throws -> UserTokenResponseDTO {
         try UserCreateDTO.validate(content: request)
         let createUser = try request.content.decode(UserCreateDTO.self)
         
@@ -29,6 +29,6 @@ struct SignUpController: RouteCollection {
         let token = try user.generateToken()
         try await token.save(on: request.db)
         
-        return token.toDTO()
+        return token.toResponseDTO()
     }
 }
