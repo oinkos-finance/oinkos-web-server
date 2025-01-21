@@ -16,7 +16,15 @@ final class UserToken: ModelTokenAuthenticatable, @unchecked Sendable {
     static let userKey = \UserToken.$user
     static let valueKey = \UserToken.$token
     static let expirationTime: TimeInterval = 60 * 15
-    var isValid = true // TODO: Change this to be timed
+    var isValid: Bool {
+        do {
+            try self.expiration.verifyNotExpired()
+        } catch {
+            return false
+        }
+        
+        return true
+    }
     
     @ID(key: .id)
     var id: UUID?
