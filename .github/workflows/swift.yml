@@ -40,4 +40,41 @@ jobs:
       with:
         name: oinkos-web-server-${{ matrix.os == 'macos-15' && 'macOS' || 'linux'}}-${{ matrix.build_type }}
         path: ${{ github.workspace }}/oinkos-web-server-${{ matrix.os == 'macos-15' && 'macOS' || 'linux'}}-${{ matrix.build_type }}
+        
+  release:
+    runs-on: ubuntu-latest
 
+    needs: build
+
+    steps:
+      - name: Get current date
+        run: echo "current_date=$(date +%Y-%m-%dT%H%M)" >> $GITHUB_ENV
+
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ env.current_date }}',
+              sha: context.sha
+            })
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: ${{ github.workspace }}/artifacts
+
+      - name: List all artifacts
+        run: ls -R ${{ github.workspace }}/artifacts
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: true
+          tag_name: ${{ env.current_date }}
+          files: |
+            ${{ github.workspace }}/artifacts/oinkos-web-server-macOS-debug/oinkos-web-server-macOS-debug
+            ${{ github.workspace }}/artifacts/oinkos-web-server-macOS-release/oinkos-web-server-macOS-release
+            ${{ github.workspace }}/artifacts/oinkos-web-server-linux-debug/oinkos-web-server-linux-debug
+            ${{ github.workspace }}/artifacts/oinkos-web-server-linux-release/oinkos-web-server-linux-release
