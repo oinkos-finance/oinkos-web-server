@@ -33,7 +33,7 @@ jobs:
       run: ls -R .build
       
     - name: Rename
-      run: mv ${{ github.workspace }}/.build/${{ matrix.os == 'macos-latest' && 'arm64-apple' || 'x86_64-pc' }}-${{ matrix.os == 'macos-latest' && 'macosx' || 'linux' }}/${{ matrix.build_type }}/App 
+      run: mv ${{ github.workspace }}/.build/${{ matrix.os == 'macos-15' && 'arm64-apple' || 'x86_64-pc' }}-${{ matrix.os == 'macos-15' && 'macosx' || 'linux' }}/${{ matrix.build_type }}/App 
         ${{ github.workspace }}/oinkos-web-server-${{ matrix.os }}-${{ matrix.build_type }}
 
     - uses: actions/upload-artifact@v4
