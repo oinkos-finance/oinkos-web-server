@@ -1,0 +1,40 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: Swift
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+  
+jobs:
+  build:    
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        os: [ubuntu-latest macos-latest]
+        build_type: [release, debug]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build
+      run: swift build -c ${{ matrix.build_type }}
+      
+    - name: Rename
+      run: mv ${{ github.workspace }}/.build/${{ matrix.os == 'macos-latest' && 'arm64-apple' || 'x86_64-pc' }}-${{ matrix.os == 'macos-latest' && 'macosx' || 'linux' }}/${{ matrix.build_type }}/App 
+        ${{ github.workspace }}/oinkos-web-server-${{ matrix.os }}-${{ matrix.build_type }}
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: oinkos-${{ matrix.os }}-${{ matrix.build_type }}
+        path: ${{ github.workspace }}/oinkos-web-server-${{ matrix.os }}-${{ matrix.build_type }}
+
