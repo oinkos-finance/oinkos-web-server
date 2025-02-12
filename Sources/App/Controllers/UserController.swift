@@ -12,13 +12,16 @@ struct UserController: RouteCollection {
         let users = routes.grouped("users")
 
         users.grouped(
-            UserToken.authenticator(), UserToken.guardMiddleware()
+            UserToken.authenticator()
         ).get(use: self.getCurrentUser)
     }
 
     @Sendable
-    func getCurrentUser(request: Request) async throws -> UserResponseDTO {
-        let userToken = try request.auth.require(UserToken.self)
+    func getCurrentUser(request: Request) async throws(Abort) -> UserResponseDTO {
+        guard let userToken = try? request.auth.require(UserToken.self) else {
+            throw Abort(.unauthorized, reason: "Unauthorized")
+        }
+
         return userToken.user.toResponseDTO()
     }
 }
