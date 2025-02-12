@@ -7,6 +7,7 @@
 
 import JWT
 import Vapor
+import Fluent
 
 struct SignUpController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
@@ -34,7 +35,11 @@ struct SignUpController: RouteCollection {
             throw Abort(.internalServerError)
         }
 
-        guard (try? await user.save(on: request.db)) != nil else {
+        do {
+            try await user.save(on: request.db)
+        } catch let error as DatabaseError where error.isConstraintFailure {
+            throw Abort(.badRequest, reason: "A user with that username already exists")
+        } catch {
             throw Abort(.internalServerError, reason: "Failed to save user")
         }
         
