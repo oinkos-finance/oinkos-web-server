@@ -7,8 +7,6 @@
 
 import Vapor
 
-struct UserCreateError: Error { }
-
 struct UserCreateDTO: Content, Validatable {
     var username: String
     var email: String
@@ -23,7 +21,7 @@ struct UserCreateDTO: Content, Validatable {
 
     func toModel() throws -> User {
         guard self.password == self.confirmPassword else {
-            throw UserCreateError()
+            throw Abort(.unprocessableEntity, reason: "Passwords must match")
         }
 
         return User(
