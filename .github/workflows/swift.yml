@@ -28,6 +28,9 @@ jobs:
     
     - name: Build
       run: swift build -c ${{ matrix.build_type }}
+
+    - name: List build folder
+      run: ls -R .build
       
     - name: Rename
       run: mv ${{ github.workspace }}/.build/${{ matrix.os == 'macos-latest' && 'arm64-apple' || 'x86_64-pc' }}-${{ matrix.os == 'macos-latest' && 'macosx' || 'linux' }}/${{ matrix.build_type }}/App 
