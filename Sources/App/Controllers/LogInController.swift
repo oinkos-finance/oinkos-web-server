@@ -18,10 +18,18 @@ struct LogInController: RouteCollection {
     
     @Sendable
     func getToken(request: Request) async throws -> UserTokenResponseDTO {
-        let userToken = try request.auth.require(User.self).generateToken()
+        guard let user = try? request.auth.require(User.self) else {
+            throw Abort(.unauthorized, reason: "Unauthorized")
+        }
         
-        try await userToken.save(on: request.db)
+        guard let token = try? user.generateToken() else {
+            throw Abort(.internalServerError, reason: "Unable to generate authentication token for user")
+        }
         
-        return userToken.toResponseDTO()
+        guard (try? await token.save(on: request.db)) != nil else {
+            throw Abort(.internalServerError, reason: "Failed to save user authentication token")
+        }
+        
+        return token.toResponseDTO()
     }
 }
