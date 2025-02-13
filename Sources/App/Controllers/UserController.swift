@@ -9,7 +9,7 @@ import Vapor
 
 struct UserController: RouteCollection {
     func boot(routes: RoutesBuilder) {
-        let users = routes.grouped("users")
+        let users = routes.grouped("user")
 
         users.grouped(
             UserToken.authenticator()
