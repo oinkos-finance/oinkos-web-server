@@ -8,23 +8,20 @@
 import Vapor
 
 struct UserController: RouteCollection {
-    func boot(routes: RoutesBuilder) throws {
-        let users = routes.grouped("users")
-        
-        users.post(use: self.create)
+    func boot(routes: RoutesBuilder) {
+        let users = routes.grouped("user")
+
+        users.grouped(
+            UserToken.authenticator()
+        ).get(use: self.getCurrentUser)
     }
-    
+
     @Sendable
-    func create(req: Request) async throws -> UserResponseDTO {
-        try UserCreateDTO.validate(content: req)
-        let createUser = try req.content.decode(UserCreateDTO.self)
-        
-        guard let user = try? createUser.toModel() else {
-            throw Abort(.badRequest, reason: "Mismatched passwords")
+    func getCurrentUser(request: Request) async throws(Abort) -> UserResponseDTO {
+        guard let userToken = try? request.auth.require(UserToken.self) else {
+            throw Abort(.unauthorized, reason: "Unauthorized")
         }
-        
-        try await user.save(on: req.db)
-        
-        return user.toResponseDTO()
+
+        return userToken.user.toResponseDTO()
     }
 }
