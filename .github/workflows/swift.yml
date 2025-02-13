@@ -27,7 +27,7 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Build
-      run: swift build -c ${{ matrix.build_type }}
+      run: swift build -c ${{ matrix.build_type }} --static-swift-stdlib
 
     - name: List build folder
       run: ls -R .build
