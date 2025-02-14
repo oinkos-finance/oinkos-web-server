@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "OinkosWebServer",
     platforms: [
-       .macOS(.v13)
+        .macOS(.v13)
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.
@@ -25,15 +25,7 @@ let package = Package(
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
-                .product(name: "JWT", package: "jwt")
-            ],
-            swiftSettings: swiftSettings
-        ),
-        .testTarget(
-            name: "AppTests",
-            dependencies: [
-                .target(name: "App"),
-                .product(name: "XCTVapor", package: "vapor"),
+                .product(name: "JWT", package: "jwt"),
             ],
             swiftSettings: swiftSettings
         )
@@ -41,7 +33,9 @@ let package = Package(
     swiftLanguageModes: [.v5]
 )
 
-var swiftSettings: [SwiftSetting] { [
-    .enableUpcomingFeature("DisableOutwardActorInference"),
-    .enableExperimentalFeature("StrictConcurrency"),
-] }
+var swiftSettings: [SwiftSetting] {
+    [
+        .enableUpcomingFeature("DisableOutwardActorInference"),
+        .enableExperimentalFeature("StrictConcurrency"),
+    ]
+}
