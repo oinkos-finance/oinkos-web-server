@@ -32,7 +32,7 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
     @Field(key: "password_hash")
     var passwordHash: String
 
-    init() { }
+    required init() { }
 
     init(id: UUID? = nil, username: String, email: String, passwordHash: String) {
         self.id = id

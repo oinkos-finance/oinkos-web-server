@@ -6,8 +6,8 @@
 //
 
 import Fluent
-import Vapor
 import JWT
+import Vapor
 
 import struct Foundation.UUID
 
@@ -22,29 +22,30 @@ final class UserToken: ModelTokenAuthenticatable, @unchecked Sendable {
         } catch {
             return false
         }
-        
+
         return true
     }
-    
+
     @ID(key: .id)
     var id: UUID?
-    
+
     @Parent(key: "user_id")
     var user: User
-    
+
     @Field(key: "token")
     var token: String
-    
+
     @Field(key: "expiration")
     var expiration: ExpirationClaim
-    
-    init() { }
-    
+
+    required init() {}
+
     init(id: UUID? = nil, userId: User.IDValue, token: String) {
         self.id = id
         self.$user.id = userId
         self.token = token
-        self.expiration = ExpirationClaim(value: Date().addingTimeInterval(UserToken.expirationTime))
+        self.expiration = ExpirationClaim(
+            value: Date().addingTimeInterval(UserToken.expirationTime))
     }
     
     func toDTO() -> UserTokenDTO {
