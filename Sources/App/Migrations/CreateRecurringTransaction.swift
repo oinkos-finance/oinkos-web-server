@@ -20,7 +20,7 @@ struct CreateRecurringTransaction: AsyncMigration {
             .field("skipped_occurrences", .array(of: .int))
             .field("end_date", .date)
             .field("created_at", .datetime, .required)
-            .field("updated_ad", .datetime, .required)
+            .field("updated_at", .datetime, .required)
             .create()
     }
 

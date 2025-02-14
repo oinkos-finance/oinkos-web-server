@@ -17,7 +17,7 @@ struct CreateUniqueTransaction: AsyncMigration {
             .field("category", database.enum("payment_type").read())
             .field("transaction_date", .date, .required)
             .field("created_at", .datetime, .required)
-            .field("updated_ad", .datetime, .required)
+            .field("updated_at", .datetime, .required)
             .create()
     }
 
