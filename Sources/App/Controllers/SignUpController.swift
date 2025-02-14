@@ -39,9 +39,7 @@ struct SignUpController: RouteCollection {
             try await user.save(on: request.db)
         } catch let error as DatabaseError where error.isConstraintFailure {
             throw Abort(.badRequest, reason: "A user with that username already exists")
-        } catch let error {
-            print(error)
-            print("User balance:", user.balance)
+        } catch {
             throw Abort(.internalServerError, reason: "Failed to save user")
         }
         
