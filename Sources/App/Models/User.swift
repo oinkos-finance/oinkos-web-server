@@ -31,6 +31,12 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
 
     @Field(key: "password_hash")
     var passwordHash: String
+    
+    @Timestamp(key: "created_at", on: .create)
+    var createdAt: Date?
+
+    @Timestamp(key: "updated_at", on: .update)
+    var updatedAt: Date?
 
     required init() { }
 

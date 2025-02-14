@@ -15,7 +15,7 @@ final class UserToken: ModelTokenAuthenticatable, @unchecked Sendable {
     static let schema = "user_token"
     static let userKey = \UserToken.$user
     static let valueKey = \UserToken.$token
-    static let expirationTime: TimeInterval = 60 * 15
+    static let expirationTime: TimeInterval = 60 * 60 * 24 * 90 // 90 days
     var isValid: Bool {
         do {
             try self.expiration.verifyNotExpired()
@@ -37,6 +37,12 @@ final class UserToken: ModelTokenAuthenticatable, @unchecked Sendable {
 
     @Field(key: "expiration")
     var expiration: ExpirationClaim
+    
+    @Timestamp(key: "created_at", on: .create)
+    var createdAt: Date?
+
+    @Timestamp(key: "updated_at", on: .update)
+    var updatedAt: Date?
 
     required init() {}
 
