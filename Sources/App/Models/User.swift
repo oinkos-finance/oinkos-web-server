@@ -58,7 +58,7 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
     func generateToken() throws -> UserToken {
         return .init(
             userId: try self.requireID(),
-            token: [UInt8].random(count: 16).base64
+            expiration: .init(value: .init(timeInterval: 60 * 60 * 24 * 90, since: .now))
         )
     }
 }

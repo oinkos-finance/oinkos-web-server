@@ -1,18 +1,20 @@
-import NIOSSL
 import Fluent
 import FluentSQLiteDriver
-import Vapor
 import JWT
+import NIOSSL
+import Vapor
 
 // configures your application
 public func configure(_ app: Application) async throws {
     app.databases.use(.sqlite(.file("oinkos.sqlite")), as: .sqlite)
 
-    let key = ES256PrivateKey()
+    guard let keyString = Environment.get("PRIVATE_KEY") else { fatalError("Could not find PRIVATE_KEY environment variable") }
+
+    let key = try ES256PrivateKey(pem: keyString)
+
     await app.jwt.keys.add(ecdsa: key)
-    
+
     app.migrations.add(CreateUser())
-    app.migrations.add(CreateUserToken())
     app.migrations.add(CreatePaymentType())
     app.migrations.add(CreateRecurringTransaction())
 

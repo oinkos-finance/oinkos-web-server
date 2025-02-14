@@ -17,12 +17,12 @@ struct SignUpController: RouteCollection {
     }
 
     @Sendable
-    func createUser(request: Request) async throws(Abort) -> UserTokenResponseDTO {
-        guard let createUser = try? request.content.decode(UserCreateDTO.self) else {
+    func createUser(request: Request) async throws(Abort) -> UserTokenResponse {
+        guard let createUser = try? request.content.decode(PostUser.self) else {
             throw Abort(.badRequest, reason: "Malformed syntax")
         }
 
-        guard (try? UserCreateDTO.validate(content: request)) != nil else {
+        guard (try? PostUser.validate(content: request)) != nil else {
             throw Abort(.unprocessableEntity, reason: "Invalid value(s)")
         }
 
@@ -43,14 +43,13 @@ struct SignUpController: RouteCollection {
             throw Abort(.internalServerError, reason: "Failed to save user")
         }
         
-        guard let token = try? user.generateToken() else {
+        guard
+            let token = try? user.generateToken(),
+            let signedToken = try? await request.jwt.sign(token)
+        else {
             throw Abort(.internalServerError, reason: "Unable to generate authentication token for user")
         }
-        
-        guard (try? await token.save(on: request.db)) != nil else {
-            throw Abort(.internalServerError, reason: "Failed to save user authentication token")
-        }
 
-        return token.toResponseDTO()
+        return .init(token: signedToken)
     }
 }

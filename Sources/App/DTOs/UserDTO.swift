@@ -7,7 +7,7 @@
 
 import Vapor
 
-struct UserCreateDTO: Content, Validatable {
+struct PostUser: Content, Validatable {
     var username: String
     var email: String
     var password: String

@@ -8,6 +8,6 @@
 import Vapor
 import JWT
 
-struct UserTokenResponseDTO: Content {
+struct UserTokenResponse: Content {
     var token: String
 }
