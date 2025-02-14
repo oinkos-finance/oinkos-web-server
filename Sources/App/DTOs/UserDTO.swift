@@ -36,4 +36,5 @@ struct UserResponseDTO: Content {
     var id: UUID?
     var username: String
     var email: String
+    var balance: Float
 }
