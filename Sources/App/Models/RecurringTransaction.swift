@@ -10,7 +10,7 @@ import Vapor
 
 import struct Foundation.UUID
 
-class RecurringTransaction: Transaction, @unchecked Sendable {
+final class RecurringTransaction: Transaction, @unchecked Sendable {
     static let schema = "recurring_transaction"
 
     @ID(key: .id)
@@ -46,7 +46,7 @@ class RecurringTransaction: Transaction, @unchecked Sendable {
     @Timestamp(key: "updated_at", on: .update)
     var updatedAt: Date?
 
-    required init() {}
+    required init() { }
 
     init(
         id: UUID? = nil,
