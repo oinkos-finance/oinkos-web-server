@@ -24,10 +24,10 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
 
     @Field(key: "password_hash")
     var passwordHash: String
-    
+
     @Field(key: "balance")
     var balance: Float
-    
+
     @Timestamp(key: "created_at", on: .create)
     var createdAt: Date?
 
@@ -36,7 +36,13 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
 
     required init() { }
 
-    init(id: UUID? = nil, username: String, email: String, passwordHash: String, balance: Float = 0) {
+    init(
+        id: UUID? = nil,
+        username: String,
+        email: String,
+        passwordHash: String,
+        balance: Float = 0
+    ) {
         self.id = id
         self.username = username
         self.email = email
@@ -45,7 +51,12 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
     }
 
     func toResponseDTO() -> ResponseUser {
-        return .init(id: self.id, username: self.username, email: self.email, balance: self.balance)
+        return .init(
+            id: self.id,
+            username: self.username,
+            email: self.email,
+            balance: self.balance
+        )
     }
 
     func generateToken() throws -> UserToken {

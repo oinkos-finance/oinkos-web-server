@@ -18,6 +18,9 @@ final class UniqueTransaction: Transaction, @unchecked Sendable {
     @Enum(key: "payment_type")
     var paymentType: PaymentType
     
+    @Parent(key: "category_id")
+    var category: Category
+    
     @Field(key: "transaction_date")
     var transactionDate: Date
     

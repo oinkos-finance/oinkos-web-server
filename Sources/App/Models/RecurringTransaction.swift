@@ -20,6 +20,9 @@ final class RecurringTransaction: Transaction, @unchecked Sendable {
 
     @Enum(key: "payment_type")
     var paymentType: PaymentType
+    
+    @Parent(key: "category_id")
+    var category: Category
 
     @Field(key: "recurrence_day")
     var recurrenceDay: Int8
