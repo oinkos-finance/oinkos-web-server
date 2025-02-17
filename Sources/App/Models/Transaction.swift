@@ -19,7 +19,7 @@ protocol Transaction: Model {
     var user: User { get set }
     var title: String { get set }
     var value: Float { get set }
-    var category: PaymentType { get set }
+    var paymentType: PaymentType { get set }
     var createdAt: Date? { get set }
     var updatedAt: Date? { get set }
 }

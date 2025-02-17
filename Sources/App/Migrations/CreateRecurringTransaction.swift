@@ -14,7 +14,7 @@ struct CreateRecurringTransaction: AsyncMigration {
             .field("user_id", .uuid, .required, .references("user", "id", onDelete:  .cascade)) 
             .field("title", .string, .required)
             .field("value", .float, .required)
-            .field("category", database.enum("payment_type").read())
+            .field("payment_type", database.enum("payment_type").read())
             .field("recurrence_day", .int8, .required)
             .field("starting_date", .date, .required)
             .field("skipped_occurrences", .array(of: .int))

@@ -25,8 +25,8 @@ final class RecurringTransaction: Transaction, @unchecked Sendable {
     @Field(key: "value")
     var value: Float
 
-    @Enum(key: "category")
-    var category: PaymentType
+    @Enum(key: "payment_type")
+    var paymentType: PaymentType
 
     @Field(key: "recurrence_day")
     var recurrenceDay: Int8
@@ -53,7 +53,7 @@ final class RecurringTransaction: Transaction, @unchecked Sendable {
         userId: User.IDValue,
         title: String,
         value: Float,
-        category: PaymentType,
+        paymentType: PaymentType,
         recurrenceDay: Int8,
         startingDate: Date,
         skippedOccurrences: [Int]? = nil,
@@ -63,7 +63,7 @@ final class RecurringTransaction: Transaction, @unchecked Sendable {
         self.$user.id = userId
         self.title = title
         self.value = value
-        self.category = category
+        self.paymentType = paymentType
         self.recurrenceDay = recurrenceDay
         self.startingDate = startingDate
         self.skippedOccurrences = skippedOccurrences

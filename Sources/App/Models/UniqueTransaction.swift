@@ -8,7 +8,7 @@
 import Vapor
 
 final class UniqueTransaction: Transaction, @unchecked Sendable {
-    static let schema = ""
+    static let schema = "unique_transaction"
     
     @ID(key: .id)
     var id: UUID?
@@ -22,8 +22,8 @@ final class UniqueTransaction: Transaction, @unchecked Sendable {
     @Field(key: "value")
     var value: Float
 
-    @Enum(key: "category")
-    var category: PaymentType
+    @Enum(key: "payment_type")
+    var paymentType: PaymentType
     
     @Field(key: "transaction_date")
     var transactionDate: Date
@@ -42,14 +42,14 @@ final class UniqueTransaction: Transaction, @unchecked Sendable {
         userId: User.IDValue,
         title: String,
         value: Float,
-        category: PaymentType,
+        paymentType: PaymentType,
         transactionDate: Date
     ) {
         self.id = id
         self.$user.id = userId
         self.title = title
         self.value = value
-        self.category = category
+        self.paymentType = paymentType
         self.transactionDate = transactionDate
     }
 }

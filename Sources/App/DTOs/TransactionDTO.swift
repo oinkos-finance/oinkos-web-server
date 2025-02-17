@@ -15,7 +15,7 @@ struct PostTransaction: Content, Validatable {
     var transactionType: TransactionType
     var title: String
     var value: Float
-    var category: PaymentType
+    var paymentType: PaymentType
 
     // exclusive for unique transactions
     var transactionDate: Date?
@@ -43,7 +43,7 @@ struct PostTransaction: Content, Validatable {
                 userId: try user.requireID(),
                 title: self.title,
                 value: self.value,
-                category: self.category,
+                paymentType: self.paymentType,
                 recurrenceDay: recurrenceDay,
                 startingDate: startingDate
             )
@@ -56,7 +56,7 @@ struct PostTransaction: Content, Validatable {
                 userId: try user.requireID(),
                 title: self.title,
                 value: self.value,
-                category: self.category,
+                paymentType: self.paymentType,
                 transactionDate: transactionDate
             )
         }
