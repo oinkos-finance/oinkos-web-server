@@ -22,7 +22,7 @@ struct UserController: RouteCollection {
     }
 
     @Sendable
-    func getCurrentUser(request: Request) async throws(Abort) -> UserResponseDTO
+    func getCurrentUser(request: Request) async throws(Abort) -> ResponseUser
     {
         guard
             let userToken = try? request.auth.require(UserToken.self),

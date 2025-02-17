@@ -51,7 +51,7 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
         self.balance = balance
     }
 
-    func toResponseDTO() -> UserResponseDTO {
+    func toResponseDTO() -> ResponseUser {
         return .init(id: self.id, username: self.username, email: self.email, balance: self.balance)
     }
 

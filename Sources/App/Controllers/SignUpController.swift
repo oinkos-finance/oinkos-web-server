@@ -17,7 +17,7 @@ struct SignUpController: RouteCollection {
     }
 
     @Sendable
-    func createUser(request: Request) async throws(Abort) -> UserTokenResponse {
+    func createUser(request: Request) async throws(Abort) -> ResponseUserToken {
         guard let createUser = try? request.content.decode(PostUser.self) else {
             throw Abort(.badRequest, reason: "Malformed syntax")
         }

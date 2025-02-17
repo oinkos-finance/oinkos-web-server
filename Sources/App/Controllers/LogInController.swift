@@ -20,7 +20,7 @@ struct LogInController: RouteCollection {
     }
 
     @Sendable
-    func getToken(request: Request) async throws(Abort) -> UserTokenResponse {
+    func getToken(request: Request) async throws(Abort) -> ResponseUserToken {
         guard let user = try? request.auth.require(User.self) else {
             throw Abort(.unauthorized, reason: "Unauthorized")
         }

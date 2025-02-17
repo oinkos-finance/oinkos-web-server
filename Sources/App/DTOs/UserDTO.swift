@@ -32,7 +32,8 @@ struct PostUser: Content, Validatable {
     }
 }
 
-struct UserResponseDTO: Content {
+struct ResponseUser: Content, Response {
+    var error: Bool = false
     var id: UUID?
     var username: String
     var email: String
