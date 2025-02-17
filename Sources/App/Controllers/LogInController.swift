@@ -9,11 +9,9 @@ import Vapor
 
 struct LogInController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let login = routes.grouped("login")
+        let logIn = routes.grouped("login")
         
-        login.grouped(
-            User.authenticator(), User.guardMiddleware()
-        ).post(use: self.getToken)
+        logIn.post(use: self.getToken)
     }
     
     @Sendable
