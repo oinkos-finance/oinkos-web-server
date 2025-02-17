@@ -1,10 +1,3 @@
-//
-//  UserToken.swift
-//  OinkosWebServer
-//
-//  Created by Sam Nascimento on 14/02/25.
-//
-
 import Vapor
 import JWT
 

@@ -1,10 +1,3 @@
-//
-//  CreateUser.swift
-//  OinkosWebServer
-//
-//  Created by Sam Nascimento on 16/11/24.
-//
-
 import Fluent
 
 struct CreateUser: AsyncMigration {

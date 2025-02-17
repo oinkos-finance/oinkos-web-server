@@ -1,10 +1,3 @@
-//
-//  SignUpController.swift
-//  OinkosWebServer
-//
-//  Created by Sam Nascimento on 18/11/24.
-//
-
 import JWT
 import Vapor
 import Fluent

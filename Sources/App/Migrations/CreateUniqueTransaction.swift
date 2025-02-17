@@ -1,10 +1,3 @@
-//
-//  CreateUniqueTransaction.swift
-//  OinkosWebServer
-//
-//  Created by Sam Nascimento on 14/02/25.
-//
-
 import Fluent
 
 struct CreateUniqueTransaction: AsyncMigration {

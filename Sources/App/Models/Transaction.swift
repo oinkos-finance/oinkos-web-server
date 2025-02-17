@@ -1,10 +1,3 @@
-//
-//  Transaction.swift
-//  OinkosWebServer
-//
-//  Created by Sam Nascimento on 13/02/25.
-//
-
 import Fluent
 import Foundation
 

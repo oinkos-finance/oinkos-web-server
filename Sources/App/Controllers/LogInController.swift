@@ -1,10 +1,3 @@
-//
-//  LogInController.swift
-//  OinkosWebServer
-//
-//  Created by Sam Nascimento on 18/11/24.
-//
-
 import Vapor
 
 struct LogInController: RouteCollection {
