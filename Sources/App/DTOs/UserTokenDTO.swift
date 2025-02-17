@@ -8,6 +8,7 @@
 import Vapor
 import JWT
 
-struct UserTokenResponse: Content {
+struct ResponseUserToken: Content, Response {
+    var error: Bool = false
     var token: String
 }
