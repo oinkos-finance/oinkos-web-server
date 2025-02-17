@@ -18,6 +18,9 @@ final class UniqueTransaction: Transaction, @unchecked Sendable {
     @Enum(key: "payment_type")
     var paymentType: PaymentType
     
+    @Parent(key: "category_id")
+    var category: Category
+    
     @Field(key: "transaction_date")
     var transactionDate: Date
     
@@ -36,6 +39,7 @@ final class UniqueTransaction: Transaction, @unchecked Sendable {
         title: String,
         value: Float,
         paymentType: PaymentType,
+        categoryId: Category.IDValue,
         transactionDate: Date
     ) {
         self.id = id
@@ -43,6 +47,7 @@ final class UniqueTransaction: Transaction, @unchecked Sendable {
         self.title = title
         self.value = value
         self.paymentType = paymentType
+        self.$category.id = categoryId
         self.transactionDate = transactionDate
     }
 }
