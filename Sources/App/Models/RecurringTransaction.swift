@@ -24,17 +24,14 @@ final class RecurringTransaction: Transaction, @unchecked Sendable {
     @Parent(key: "category_id")
     var category: Category
 
-    @Field(key: "recurrence_day")
-    var recurrenceDay: Int8
-
     @Field(key: "starting_date")
     var startingDate: Date
 
     @Field(key: "skipped_occurrences")
-    var skippedOccurrences: [Int]?
+    var skippedOccurrences: [Int]
 
-    @Field(key: "end_date")
-    var endDate: Date?
+    @Field(key: "ending_date")
+    var endingDate: Date?
 
     @Timestamp(key: "created_at", on: .create)
     var createdAt: Date?
@@ -51,10 +48,9 @@ final class RecurringTransaction: Transaction, @unchecked Sendable {
         value: Float,
         paymentType: PaymentType,
         categoryId: Category.IDValue,
-        recurrenceDay: Int8,
         startingDate: Date,
-        skippedOccurrences: [Int]? = nil,
-        endDate: Date? = nil
+        skippedOccurrences: [Int] = [],
+        endingDate: Date? = nil
     ) {
         self.id = id
         self.$user.id = userId
@@ -62,9 +58,8 @@ final class RecurringTransaction: Transaction, @unchecked Sendable {
         self.value = value
         self.paymentType = paymentType
         self.$category.id = categoryId
-        self.recurrenceDay = recurrenceDay
         self.startingDate = startingDate
         self.skippedOccurrences = skippedOccurrences
-        self.endDate = endDate
+        self.endingDate = endingDate
     }
 }

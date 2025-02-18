@@ -7,7 +7,7 @@ enum PaymentType: String, Codable {
     case creditCard, debitCard, cash, directTransfer
 }
 
-protocol Transaction: Model {
+protocol Transaction: Model, Codable {
     var id: UUID? { get set }
     var user: User { get set }
     var title: String { get set }
