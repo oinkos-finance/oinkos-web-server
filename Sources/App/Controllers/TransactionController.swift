@@ -44,7 +44,7 @@ struct TransactionController: RouteCollection {
             getTransaction.endingDate > getTransaction.startingDate,
             getTransaction.endingDate <= oneMonthFromStartingDate
         else {
-            throw Abort(.badRequest, reason: "Invalid value(s)")
+            throw Abort(.unprocessableEntity, reason: "Invalid value(s)")
         }
 
         guard
@@ -191,7 +191,7 @@ struct TransactionController: RouteCollection {
         guard
             (try? PostTransaction.validate(content: request)) != nil
         else {
-            throw Abort(.badRequest, reason: "Invalid value(s)")
+            throw Abort(.unprocessableEntity, reason: "Invalid value(s)")
         }
 
         guard
