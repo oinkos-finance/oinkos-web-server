@@ -1,7 +1,7 @@
 import Vapor
 
 struct LogInController: RouteCollection {
-    func boot(routes: RoutesBuilder) throws {
+    func boot(routes: RoutesBuilder) {
         let logIn = routes.grouped("login")
 
         logIn.grouped(

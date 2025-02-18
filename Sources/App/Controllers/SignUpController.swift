@@ -3,7 +3,7 @@ import Vapor
 import Fluent
 
 struct SignUpController: RouteCollection {
-    func boot(routes: RoutesBuilder) throws {
+    func boot(routes: RoutesBuilder) {
         let signUp = routes.grouped("signup")
 
         signUp.post(use: self.createUser)
@@ -31,7 +31,7 @@ struct SignUpController: RouteCollection {
         do {
             try await user.save(on: request.db)
         } catch let error as DatabaseError where error.isConstraintFailure {
-            throw Abort(.badRequest, reason: "A user with that username already exists")
+            throw Abort(.badRequest, reason: "A user with that username or email already exists")
         } catch {
             throw Abort(.internalServerError, reason: "Failed to save user")
         }
