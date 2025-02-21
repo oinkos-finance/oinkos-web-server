@@ -25,8 +25,8 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
     @Field(key: "password_hash")
     var passwordHash: String
 
-    @Field(key: "balance")
-    var balance: Float
+    @Field(key: "salary")
+    var salary: Float
 
     @Timestamp(key: "created_at", on: .create)
     var createdAt: Date?
@@ -41,13 +41,13 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
         username: String,
         email: String,
         passwordHash: String,
-        balance: Float = 0
+        salary: Float = 0
     ) {
         self.id = id
         self.username = username
         self.email = email
         self.passwordHash = passwordHash
-        self.balance = balance
+        self.salary = salary
     }
 
     func toResponseDTO() -> ResponseUser {
@@ -55,7 +55,7 @@ final class User: ModelAuthenticatable, @unchecked Sendable {
             id: self.id,
             username: self.username,
             email: self.email,
-            balance: self.balance
+            salary: self.salary
         )
     }
 
