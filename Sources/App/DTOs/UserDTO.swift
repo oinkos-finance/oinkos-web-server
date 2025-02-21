@@ -28,6 +28,21 @@ struct PostUser: Content, Validatable {
     }
 }
 
+struct PatchUser: Content, Validatable {
+    var username: String?
+    var email: String?
+    var password: String?
+    var confirmPassword: String?
+    var salary: Float?
+
+    static func validations(_ validations: inout Validations) {
+        validations.add("username", as: String.self, is: !.empty, required: false)
+        validations.add("email", as: String.self, is: .email, required: false)
+        validations.add("password", as: String.self, is: .count(8...), required: false)
+        validations.add("salary", as: Float.self, is: .range(0...), required: false)
+    }
+}
+
 struct ResponseUser: Content, Response {
     var error: Bool = false
     var id: UUID?
