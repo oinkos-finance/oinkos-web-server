@@ -41,12 +41,12 @@ struct UserController: RouteCollection {
             throw Abort(.unauthorized, reason: "Unauthorized")
         }
 
-        guard (try? PostUser.validate(content: request)) != nil else {
-            throw Abort(.unprocessableEntity, reason: "Invalid value(s)")
-        }
-
         guard let patch = try? request.content.decode(PatchUser.self) else {
             throw Abort(.badRequest, reason: "Malformed syntax")
+        }
+        
+        guard (try? PatchUser.validate(content: request)) != nil else {
+            throw Abort(.unprocessableEntity, reason: "Invalid value(s)")
         }
 
         if let username = patch.username {
@@ -78,7 +78,7 @@ struct UserController: RouteCollection {
         }
 
         do {
-            try await user.save(on: request.db)
+            try await user.update(on: request.db)
         } catch {
             throw Abort(.internalServerError, reason: "Failed to save updated user")
         }
