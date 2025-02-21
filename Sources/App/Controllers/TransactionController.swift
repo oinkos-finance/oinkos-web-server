@@ -156,8 +156,6 @@ struct TransactionController: RouteCollection {
                             to: value.startingDate
                         )!
                         currentLoop += 1
-
-                        print(currentDate.ISO8601Format())
                     }
                 }
             } catch {
@@ -220,7 +218,6 @@ struct TransactionController: RouteCollection {
         } catch FluentError.idRequired {
             throw Abort(.unauthorized, reason: "Unauthorized")  // should never be reached
         } catch let error as DatabaseError where error.isConstraintFailure {
-            print(error)
             throw Abort(
                 .internalServerError, reason: "Something went wrong.", suggestedFixes: ["A category with that name already exists"])  // should never be reached
         } catch {
