@@ -68,7 +68,7 @@ struct PostTransaction: Content, Validatable {
     var startingDate: Date?
 
     static func validations(_ validations: inout Validations) {
-        validations.add("title", as: String.self, is: !.empty)
+        validations.add("title", as: String.self, is: !.empty && .count(...100))
         validations.add("value", as: Float.self, is: .range(0...))
         
         validations.add("recurrenceDay", as: Int8.self, is: .range(0...31), required: false)

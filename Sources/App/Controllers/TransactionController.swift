@@ -24,12 +24,9 @@ struct TransactionController: RouteCollection {
     }
 
     @Sendable
-    func getAllTransactions(request: Request) async throws(Abort)
-        -> ResponseTransactions
-    {
+    func getAllTransactions(request: Request) async throws(Abort) -> ResponseTransactions {
         guard
-            var getTransaction = try? request.content.decode(
-                GetTransaction.self)
+            var getTransaction = try? request.query.decode(GetTransaction.self)
         else {
             throw Abort(.badRequest, reason: "Malformed syntax")
         }
@@ -39,10 +36,10 @@ struct TransactionController: RouteCollection {
             for: getTransaction.endingDate)
 
         guard
-            let oneMonthFromStartingDate = Calendar.current.date(
+            let threeMonthsFromStartingDate = Calendar.current.date(
                 byAdding: .month, value: 3, to: getTransaction.startingDate),
             getTransaction.endingDate > getTransaction.startingDate,
-            getTransaction.endingDate <= oneMonthFromStartingDate
+            getTransaction.endingDate <= threeMonthsFromStartingDate
         else {
             throw Abort(.unprocessableEntity, reason: "Invalid value(s)")
         }
@@ -225,7 +222,7 @@ struct TransactionController: RouteCollection {
         } catch let error as DatabaseError where error.isConstraintFailure {
             print(error)
             throw Abort(
-                .badRequest, reason: "A category with that name already exists")  // should never be reached
+                .internalServerError, reason: "Something went wrong.", suggestedFixes: ["A category with that name already exists"])  // should never be reached
         } catch {
             throw Abort(
                 .internalServerError,
@@ -238,7 +235,7 @@ struct TransactionController: RouteCollection {
                 user: user, category: category!)
         } catch {
             throw Abort(
-                .internalServerError, reason: "Invalid user or category values")  // should never be reached
+                .internalServerError, reason: "Something went wrong.", suggestedFixes: ["Invalid user or category values"])  // should never be reached
         }
 
         do {
