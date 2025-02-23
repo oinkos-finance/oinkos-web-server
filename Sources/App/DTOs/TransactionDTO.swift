@@ -32,6 +32,8 @@ enum TransactionStatus: String, Codable {
 }
 
 struct ResponseTransaction: Codable {
+    var id: UUID
+    
     var transactionType: TransactionType
     var transactionStatus: TransactionStatus
     var occurrence: Int
@@ -66,6 +68,7 @@ struct PostTransaction: Content, Validatable {
 
     // exclusive for recurring transactions
     var startingDate: Date?
+    var endingDate: Date?
 
     static func validations(_ validations: inout Validations) {
         validations.add("title", as: String.self, is: !.empty && .count(...100))
@@ -83,13 +86,19 @@ struct PostTransaction: Content, Validatable {
                 throw Abort(.badRequest, reason: "Malformed syntax")
             }
 
+            var startOfEndingDate: Date? = nil
+            if let endingDate = self.endingDate {
+                startOfEndingDate = Calendar.current.startOfDay(for: endingDate)
+            }
+            
             return RecurringTransaction(
                 userId: try user.requireID(),
                 title: self.title,
                 value: self.value,
                 paymentType: self.paymentType,
                 categoryId: try category.requireID(),
-                startingDate: Calendar.current.startOfDay(for: startingDate)
+                startingDate: Calendar.current.startOfDay(for: startingDate),
+                endingDate: startOfEndingDate
             )
         case .unique:
             guard let transactionDate = self.transactionDate else {
@@ -106,4 +115,34 @@ struct PostTransaction: Content, Validatable {
             )
         }
     }
+}
+
+struct PatchTransaction: Content, Validatable {
+    var title: String?
+    var value: Float?
+    var paymentType: PaymentType?
+    var category: String?
+
+    // exclusive for unique transactions
+    var transactionDate: Date?
+
+    // exclusive for recurring transactions
+    var startingDate: Date?
+    var endingDate: Date?
+
+    static func validations(_ validations: inout Validations) {
+        validations.add("title", as: String.self, is: !.empty && .count(...100), required: false)
+        validations.add("value", as: Float.self, is: .range(0...), required: false)
+        
+        validations.add("recurrenceDay", as: Int8.self, is: .range(0...31), required: false)
+    }
+}
+
+enum SkipAction: String, Codable {
+    case skip, revert
+}
+
+struct PostSkipTransaction: Content {
+    var action: SkipAction
+    var occurrence: Int
 }
