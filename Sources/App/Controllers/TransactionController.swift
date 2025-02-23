@@ -82,8 +82,6 @@ struct TransactionController: RouteCollection {
                     .init(
                         id: try! value.requireID(),
                         transactionType: .unique,
-                        transactionStatus: .credited,
-                        occurrence: 1,
                         title: value.title,
                         value: value.value,
                         paymentType: value.paymentType,
@@ -126,13 +124,15 @@ struct TransactionController: RouteCollection {
                                 .init(
                                     id: try! value.requireID(),
                                     transactionType: .recurring,
-                                    transactionStatus: value.skippedOccurrences.contains(currentLoop) ? .skipped : .credited,
-                                    occurrence: currentLoop,
                                     title: value.title,
                                     value: value.value,
                                     paymentType: value.paymentType,
                                     category: try! value.joined(Category.self).name,
-                                    transactionDate: currentDate
+                                    transactionDate: currentDate,
+                                    transactionStatus: value.skippedOccurrences.contains(currentLoop) ? .skipped : .credited,
+                                    occurrence: currentLoop,
+                                    startingDate: value.startingDate,
+                                    endingDate: value.endingDate
                                 )
                             )
                         }

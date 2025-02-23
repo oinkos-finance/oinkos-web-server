@@ -35,8 +35,6 @@ struct ResponseTransaction: Codable {
     var id: UUID
     
     var transactionType: TransactionType
-    var transactionStatus: TransactionStatus
-    var occurrence: Int
     
     var title: String
     var value: Float
@@ -44,6 +42,11 @@ struct ResponseTransaction: Codable {
     var category: String
     
     var transactionDate: Date
+    
+    var transactionStatus: TransactionStatus?
+    var occurrence: Int?
+    var startingDate: Date?
+    var endingDate: Date?
 }
 
 struct ResponseTransactions: Content, Response {
