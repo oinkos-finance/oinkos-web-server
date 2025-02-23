@@ -97,10 +97,10 @@ struct TransactionController: RouteCollection {
             do {
                 var request = try RecurringTransaction.query(on: request.db)
                     .filter(\.$user.$id == user.requireID())
+                    .filter(\.$startingDate <= getTransaction.endingDate)
                     .group(.or) { group in
                         group.filter(\.$endingDate == nil)
-                        group.filter(
-                            \.$endingDate <= getTransaction.startingDate)
+                        group.filter(\.$endingDate >= getTransaction.startingDate)
                     }
                     .join(Category.self, on: \RecurringTransaction.$category.$id == \Category.$id)
 
@@ -118,7 +118,7 @@ struct TransactionController: RouteCollection {
                     var currentDate = value.startingDate
 
                     var currentLoop = 1
-                    while (currentDate <= getTransaction.endingDate) && !(value.endingDate != nil && currentDate >= value.endingDate!) {
+                    while (currentDate <= getTransaction.endingDate) && !(value.endingDate != nil && currentDate > value.endingDate!) {
                         if currentDate >= getTransaction.startingDate {
                             responseTransaction.append(
                                 .init(
@@ -215,7 +215,7 @@ struct TransactionController: RouteCollection {
         }
 
         do {
-            try await transactionModel.save(on: request.db)
+            try await transactionModel.create(on: request.db)
         } catch {
             throw Abort(.internalServerError, reason: "Failed to save transaction to the database")
         }
