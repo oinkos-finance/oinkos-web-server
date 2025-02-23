@@ -52,6 +52,8 @@ struct ResponseTransaction: Codable {
 struct ResponseTransactions: Content, Response {
     var error = false
     
+    var total: Float
+    
     var staringDate: Date
     var endingDate: Date
     

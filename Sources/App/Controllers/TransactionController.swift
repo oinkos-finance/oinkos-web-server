@@ -150,7 +150,16 @@ struct TransactionController: RouteCollection {
             }
         }
 
+        let total: Float = responseTransaction.reduce(0) { partialResult, transaction in
+            if let status = transaction.transactionStatus, status == .skipped {
+                return partialResult
+            } else {
+                return partialResult + transaction.value
+            }
+        }
+        
         return .init(
+            total: total,
             staringDate: getTransaction.startingDate,
             endingDate: getTransaction.endingDate,
             transactions: responseTransaction
